@@ -1,5 +1,5 @@
 
-# Communication_LTD Project
+# Secure & Vulnerable Flask App (Security Course Project)
 
 This project demonstrates secure and vulnerable implementations of a web application for a fictional company, **Communication_LTD**. The system handles employee management, customer additions, and administrative tasks, showcasing security best practices alongside common vulnerabilities.
 
