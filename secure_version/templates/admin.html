@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body>
+    <div class="admin-container">
+        <div class="separator-line"></div>
+
+        <h1>Admin Dashboard</h1>
+
+        <div class="separator-line"></div>
+        
+        <!-- Search Section -->
+        <div class="search-container">
+            <h2>Search Customers</h2>
+            <form action="/admin-search" method="GET">
+                <label for="search">Search for Customers:</label>
+                <input type="text" id="search" name="search" placeholder="Enter full name or email" required>
+                <button type="submit">Search</button>
+            </form>
+            
+            {% if search_query %}
+                {% if customers %}
+                <div class="table-container">
+                    <h3>Search Results</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Sector</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for customer in customers %}
+                            <tr>
+                                <td>{{ customer.full_name }}</td>
+                                <td>{{ customer.email }}</td>
+                                <td>{{ customer.sector.sectorName }}</td> 
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p>No customers found for your search.</p>
+                {% endif %}
+            {% endif %}
+        </div> 
+
+        <div class="separator-line"></div>
+
+        <!-- Add New Customer Section -->
+        <div class="add-customer-container">
+            <h2>Add New Customer</h2>
+
+            <!-- Display flash messages with categories -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <form action="/admin-add-customer" method="POST">
+                <label for="full_name">Full Name</label>
+                <input type="text" id="full_name" name="full_name" placeholder="Enter full name" required>
+
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter email" required>
+
+                <label for="sector_id">Select Sector</label>
+                <select id="sector_id" name="sector_id" class="custom-dropdown" required>
+                    <option value="" disabled selected>Select sector</option>
+                    {% for sector in sectors %}
+                        <option value="{{ sector.id }}">{{ sector.sectorName }}</option>
+                    {% endfor %}
+                </select>
+
+                <button type="submit">Add Customer</button>
+            </form>
+        </div>
+
+        <div class="separator-line"></div>
+
+        <!-- Customer List Section (shown separately from search results) -->
+        <div class="customer-list-container">
+            <h2>Customer List by Sector</h2>
+            {% if customers_by_sector %}
+                {% for sector, customers in customers_by_sector.items() %}
+                    <h3>{{ sector }}</h3>
+                    
+                    <!-- Scrollable Table Container -->
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Full Name</th>
+                                    <th>Email</th>
+                                    <th>Sector</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for customer in customers %}
+                                    <tr>
+                                        <td>{{ customer.full_name }}</td>
+                                        <td>{{ customer.email }}</td>
+                                        <td>{{ customer.sector.sectorName }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No customers found.</p>
+            {% endif %}
+        </div>
+
+        <div class="separator-line"></div>
+
+        <!-- Plans Section -->
+        <div class="plans-container">
+            <h2>Our current cellular plans available for the customers:</h2>
+            <div class="plans">
+                <!-- Plan 1 -->
+                <div class="plan">
+                    <h2>Basic Plan</h2>
+                    <p>Get started with our Basic Plan, offering all the essentials:</p>
+                    <ul>
+                        <li>200 minutes of talk time</li>
+                        <li>500 SMS messages</li>
+                        <li>5 GB of data</li>
+                    </ul>
+                    <p><strong>Price:</strong> $15/month</p>
+                </div>
+
+                <!-- Plan 2 -->
+                <div class="plan">
+                    <h2>Standard Plan</h2>
+                    <p>Enjoy more talk time and data with the Standard Plan:</p>
+                    <ul>
+                        <li>500 minutes of talk time</li>
+                        <li>1000 SMS messages</li>
+                        <li>10 GB of data</li>
+                    </ul>
+                    <p><strong>Price:</strong> $25/month</p>
+                </div>
+
+                <!-- Plan 3 -->
+                <div class="plan">
+                    <h2>Premium Plan</h2>
+                    <p>Unlimited everything for the ultimate experience:</p>
+                    <ul>
+                        <li>Unlimited talk time</li>
+                        <li>Unlimited SMS messages</li>
+                        <li>50 GB of high-speed data</li>
+                    </ul>
+                    <p><strong>Price:</strong> $50/month</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="separator-line"></div>
+
+        <!-- Logout Section -->
+        <div class="logout-button">
+            <form action="logout" method="get">
+                <button type="submit" class="logout">Logout</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

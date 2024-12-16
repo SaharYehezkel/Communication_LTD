@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Comunication_LTD</title>
+    <link rel="stylesheet" href="../static/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Communication_LTD</h1>
+
+        <!-- Display flash messages with categories -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <p>Manage your tasks easily with our sleek interface (Secured Version).</p>
+
+        <div class="button-container">
+            <form action="register" method="get">
+                <button type="submit" class="button">Register</button>
+            </form>
+            <form action="login" method="get">
+                <button type="submit" class="button">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
